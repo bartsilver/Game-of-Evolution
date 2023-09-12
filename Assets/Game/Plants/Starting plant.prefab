@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8590752282418814674}
   - component: {fileID: 3789321924025407479}
   - component: {fileID: 2410450544868732045}
+  - component: {fileID: 148884686071790003}
+  - component: {fileID: 5433728366315044657}
   m_Layer: 0
   m_Name: Starting plant
   m_TagString: Untagged
@@ -111,3 +113,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nutrition: 0
+--- !u!114 &148884686071790003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525419288222947053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c67c369ecbc314dadc2d0bd4f72b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxEnergy: 100
+  energy: 50
+  nutrition: 0
+--- !u!114 &5433728366315044657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525419288222947053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8f195e4d1f17249a9366ce7568640c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingPlant: {fileID: 5525419288222947053}
+  areaOfReproduction: 5

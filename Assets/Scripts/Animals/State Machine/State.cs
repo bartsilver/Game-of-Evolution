@@ -10,3 +10,9 @@ public enum State
     MovingToMate,
     FleetingFromPredator
 }
+
+public enum Sex
+{
+    Male,
+    Female
+}

@@ -9,6 +9,7 @@ public class BasicBehavior : MonoBehaviour
     Mover mover;
     BasicStats basicStats;
     Food food;
+    BasicStats mate;
 
     Vector3 targetDestination;
 
@@ -34,8 +35,12 @@ public class BasicBehavior : MonoBehaviour
                 break;
 
             case State.LookingForMate:
+                LookingForMate();
+                break;
 
             case State.MovingToMate:
+                MovingToMate();
+                break;
 
             default:
                 return;
@@ -45,26 +50,90 @@ public class BasicBehavior : MonoBehaviour
         }
     }
 
+    private void LookingForMate()
+    {
+        if (basicStats.energy <= 70f)
+        {
+            currentState = State.LookingForFood;
+        }
+        CheckForMate(out bool didFindMate, out mate);
+        Debug.Log(didFindMate, mate);
+
+        if (didFindMate)
+        {
+            currentState = State.MovingToMate;
+        }
+        else
+        {
+            if (targetDestination == Vector3.zero)
+            {
+                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
+                mover.MoveTo(targetDestination);
+            }
+
+            if (AtWaypoint())
+            {
+                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
+                mover.MoveTo(targetDestination);
+            }
+
+        }
+    }
+
     private void MovingToFood()
     {
+        if (food == null)
+        {
+            currentState = State.LookingForFood;
+            return;
+        }
         targetDestination = food.transform.position;
         mover.MoveTo(targetDestination);
         if (Vector3.Distance(transform.position, food.transform.position) < 2f)
         {
             Eat();
+            //currentState = State.LookingForFood;
+        }
+    }
+
+    private void MovingToMate()
+    {
+        if (mate == null)
+        {
+            currentState = State.LookingForMate;
+            return;
+        }
+        targetDestination = mate.transform.position;
+        mover.MoveTo(targetDestination);
+        if (Vector3.Distance(transform.position, mate.transform.position) < 2f)
+        {
+            GetComponent<AnimalReproduction>().Reproduce();
+            basicStats.energy = 50f;
             currentState = State.LookingForFood;
         }
     }
 
     private void Eat()
     {
-        food.GetEaten();      
+        food.GetEaten(out float nutrition);
+        basicStats.energy += nutrition;
+
+        if (basicStats.energy > 100) basicStats.energy = 100f;
+
+        if (basicStats.energy > 99f)
+        {
+            currentState = State.LookingForMate;
+        }
+        else
+        {
+            currentState = State.LookingForFood;
+        }
     }
 
     private void LookingForFood()
     {
         CheckForFood(out bool didFindFood, out food);
-        Debug.Log(didFindFood, food);
+        //Debug.Log(didFindFood, food);
 
         if (didFindFood)
         {
@@ -74,13 +143,13 @@ public class BasicBehavior : MonoBehaviour
         {
             if (targetDestination == Vector3.zero)
             {
-                targetDestination = mover.ChooseRandomDestination(basicStats.Sight);
+                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
                 mover.MoveTo(targetDestination);
             }
 
             if (AtWaypoint())
             {
-                targetDestination = mover.ChooseRandomDestination(basicStats.Sight);
+                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
                 mover.MoveTo(targetDestination);
             }
 
@@ -96,7 +165,7 @@ public class BasicBehavior : MonoBehaviour
     {
         Food foundFood = null;
         Food closestFood = null;
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, basicStats.Sight, Vector3.up, 0);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, basicStats.sight, Vector3.up, 0);
         foreach (RaycastHit hit in hits)
         {
             foundFood = hit.collider.GetComponent<Food>();
@@ -116,6 +185,34 @@ public class BasicBehavior : MonoBehaviour
         {
             didFindFood = false;
             foodFound = null;
+        }
+    }
+
+    private void CheckForMate(out bool didFindMate, out BasicStats mateFound)
+    {
+        BasicStats foundMate = null;
+        BasicStats closestMate = null;
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, basicStats.sight, Vector3.up, 0);
+        foreach (RaycastHit hit in hits)
+        {
+            foundMate = hit.collider.GetComponent<BasicStats>();
+            if (foundMate == null) continue;
+            if (foundMate.sex == basicStats.sex) continue;
+
+            if (closestMate == null || Vector3.Distance(transform.position, foundMate.transform.position) < Vector3.Distance(transform.position, closestMate.transform.position))
+            {
+                closestMate = foundMate;
+            }
+        }
+        if (closestMate != null)
+        {
+            didFindMate = true;
+            mateFound = closestMate;
+        }
+        else
+        {
+            didFindMate = false;
+            mateFound = null;
         }
     }
 }

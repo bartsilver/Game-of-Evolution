@@ -13,6 +13,11 @@ GameObject:
   - component: {fileID: 5070025681912439898}
   - component: {fileID: 5070025681912439899}
   - component: {fileID: 5070025681912439892}
+  - component: {fileID: 8261166979424321456}
+  - component: {fileID: 351146508}
+  - component: {fileID: 351146513}
+  - component: {fileID: 351146514}
+  - component: {fileID: 4063969897045041147}
   m_Layer: 0
   m_Name: Starting animal
   m_TagString: Untagged
@@ -121,3 +126,74 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8261166979424321456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5070025681912439893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1d444d84a173045bacef10a1188ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingAnimal: {fileID: 5070025681912439893}
+  areaOfReproduction: 5
+--- !u!114 &351146508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5070025681912439893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52cf77ec71e5316438d8d7306dab5fc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypointTolerance: 1.1
+--- !u!114 &351146513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5070025681912439893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e033cc79cbb46418843ebb2c9d7c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  femaleMaterial: {fileID: 2100000, guid: 7e3f97d2382c1d04e813651ec14594cc, type: 2}
+  maleMaterial: {fileID: 2100000, guid: 8f0df9c6dbf843f40b00c95262c709fd, type: 2}
+  energy: 90
+  speed: 3
+  sight: 10
+  sex: 0
+--- !u!114 &351146514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5070025681912439893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848ea99b97216d740a3d125f80775696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4063969897045041147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5070025681912439893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1d444d84a173045bacef10a1188ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingAnimal: {fileID: 5070025681912439893}
+  areaOfReproduction: 5
