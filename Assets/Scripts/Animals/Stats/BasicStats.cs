@@ -14,6 +14,7 @@ public class BasicStats : MonoBehaviour, IStats
 
     private void Awake()
     {
+        sex = RandomSex();
         if (sex == Sex.Male)
         {
             GetComponent<MeshRenderer>().material = maleMaterial;
@@ -30,6 +31,19 @@ public class BasicStats : MonoBehaviour, IStats
     {
         energy -= Time.deltaTime * 1f;
         if (energy <= 0f) Die();
+    }
+
+    private Sex RandomSex()
+    {
+        int i = Random.Range(1, 10);
+        if (i <= 5)
+        {
+            return Sex.Male;
+        }
+        else
+        {
+            return Sex.Female;
+        }
     }
 
     private void Die()

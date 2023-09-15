@@ -106,7 +106,7 @@ public class AnimalBrain : MonoBehaviour
     {
         if (mate == null)
         {
-            targetDestination = Vector3.zero;
+
             currentState = State.LookingForMate;
             return;
         }
