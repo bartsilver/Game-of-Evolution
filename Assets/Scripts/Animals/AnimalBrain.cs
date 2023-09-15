@@ -1,26 +1,26 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicBehavior : MonoBehaviour
+
+[RequireComponent(typeof(Mover))]
+[RequireComponent(typeof(BasicStats))]
+public class AnimalBrain : MonoBehaviour
 {
-    /*State currentState;
+    State currentState = State.LookingForFood;
     Mover mover;
+    Food foodFound;
     BasicStats basicStats;
-    Food food;
     BasicStats mate;
 
     Vector3 targetDestination;
-    bool didFindPoint = false;
 
     private void Awake()
     {
         mover = GetComponent<Mover>();
         basicStats = GetComponent<BasicStats>();
     }
-
-    private void Update()
+    void Update()
     {
         switch (currentState)
         {
@@ -41,117 +41,13 @@ public class BasicBehavior : MonoBehaviour
                 break;
 
             default:
-                return;            
-        }
-    }
-
-    private void LookingForMate()
-    {
-        if (basicStats.energy <= 70f)
-        {
-            currentState = State.LookingForFood;
-        }
-        CheckForMate(out bool didFindMate, out mate);
-
-        if (didFindMate)
-        {
-            currentState = State.MovingToMate;
-        }
-        else
-        {
-            if (targetDestination == Vector3.zero)
-            {
-                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
-                mover.MoveTo(targetDestination);
-            }
-
-            if (AtWaypoint())
-            {
-                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
-                mover.MoveTo(targetDestination);
-            }
-
-        }
-    }
-
-    private void MovingToFood()
-    {
-        if (food == null)
-        {
-            currentState = State.LookingForFood;
-            return;
-        }
-        targetDestination = food.transform.position;
-        mover.MoveTo(targetDestination);
-        if (Vector3.Distance(transform.position, food.transform.position) < 2f)
-        {
-            Eat();
-        }
-    }
-
-    private void MovingToMate()
-    {
-        if (mate == null)
-        {
-            currentState = State.LookingForMate;
-            return;
-        }
-        targetDestination = mate.transform.position;
-        mover.MoveTo(targetDestination);
-        if (Vector3.Distance(transform.position, mate.transform.position) < 2f)
-        {
-            GetComponent<AnimalReproduction>().Reproduce();
-            basicStats.energy = 50f;
-            currentState = State.LookingForFood;
-        }
-    }
-
-    private void Eat()
-    {
-        food.GetEaten(out float nutrition);
-        basicStats.energy += nutrition;
-
-        if (basicStats.energy > 100) basicStats.energy = 100f;
-
-        if (basicStats.energy > 99f)
-        {
-            currentState = State.LookingForMate;
-        }
-        else
-        {
-            currentState = State.LookingForFood;
-        }
-    }
-
-    private void LookingForFood2()
-    {
-        CheckForFood(out bool didFindFood, out food);
-        //Debug.Log(didFindFood, food);
-
-        if (didFindFood)
-        {
-            currentState = State.MovingToFood;
-        }
-        else
-        {
-            if (targetDestination == Vector3.zero)
-            {
-                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
-                mover.MoveTo(targetDestination);
-            }
-
-            if (AtWaypoint())
-            {
-                targetDestination = mover.ChooseRandomDestination(basicStats.sight);
-                mover.MoveTo(targetDestination);
-            }
-
+                return;
         }
     }
 
     private void LookingForFood()
     {
-        CheckForFood(out bool didFindFood, out food);
+        CheckForFood(out bool didFindFood, out foodFound);
 
         if (didFindFood)
         {
@@ -167,11 +63,69 @@ public class BasicBehavior : MonoBehaviour
         }
     }
 
+    private void MovingToFood()
+    {
+        if (foodFound == null)
+        {
+            targetDestination = Vector3.zero;
+            currentState = State.LookingForFood;
+            return;
+        }
+        targetDestination = foodFound.transform.position;
+        mover.MoveTo(targetDestination);
+        if (Vector3.Distance(transform.position, foodFound.transform.position) < 2f)
+        {
+            Eat();
+        }
+    }
+
+    private void LookingForMate()
+    {
+        if (basicStats.energy <= 70f)
+        {
+            targetDestination = Vector3.zero;
+            currentState = State.LookingForFood;
+        }
+        CheckForMate(out bool didFindMate, out mate);
+
+        if (didFindMate)
+        {
+            currentState = State.MovingToMate;
+        }
+        else
+        {
+            if (targetDestination == Vector3.zero || AtWaypoint())
+            {
+                mover.FindRandomPoint(transform.position, basicStats.sight, out targetDestination);
+                mover.MoveTo(targetDestination);
+            }
+        }
+    }
+
+    private void MovingToMate()
+    {
+        if (mate == null)
+        {
+            targetDestination = Vector3.zero;
+            currentState = State.LookingForMate;
+            return;
+        }
+        targetDestination = mate.transform.position;
+        mover.MoveTo(targetDestination);
+        if (Vector3.Distance(transform.position, mate.transform.position) < 2f)
+        {
+            GetComponent<AnimalReproduction>().Reproduce();
+            basicStats.energy = 50f;
+            currentState = State.LookingForFood;
+        }
+    }
+
     private bool AtWaypoint()
     {
         float distanceToWaypoint = Vector3.Distance(transform.position, targetDestination);
         return distanceToWaypoint < 1.1f;
     }
+
     private void CheckForFood(out bool didFindFood, out Food foodFound)
     {
         Food foundFood = null;
@@ -225,5 +179,23 @@ public class BasicBehavior : MonoBehaviour
             didFindMate = false;
             mateFound = null;
         }
-    }*/
+    }
+
+    private void Eat()
+    {
+        foodFound.GetEaten(out float nutrition);
+        basicStats.energy += nutrition;
+
+        if (basicStats.energy > 100) basicStats.energy = 100f;
+
+        if (basicStats.energy > 99f)
+        {
+            currentState = State.LookingForMate;
+        }
+        else
+        {
+            currentState = State.LookingForFood;
+        }
+    }
+
 }

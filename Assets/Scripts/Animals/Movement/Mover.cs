@@ -15,7 +15,20 @@ public class Mover : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    public Vector3 ChooseRandomDestination(float seeDistance)
+    public void FindRandomPoint (Vector3 center, float seeDistance, out Vector3 result)
+    {
+        Vector3 randomPoint = center + Random.insideUnitSphere * seeDistance;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, seeDistance, NavMesh.AllAreas))
+        {
+            result = hit.position;
+            return;
+        }
+        result = Vector3.zero;
+    }
+
+
+    /*public Vector3 ChooseRandomDestination(float seeDistance)
     {
         Vector3 randDirection = Random.insideUnitSphere * seeDistance;
 
@@ -41,7 +54,7 @@ public class Mover : MonoBehaviour
 
         targetDestination = navHit.position;
         return targetDestination;
-    }
+    }*/
 
         public void MoveTo(Vector3 destination)
     {
