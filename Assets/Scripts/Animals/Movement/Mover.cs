@@ -27,38 +27,12 @@ public class Mover : MonoBehaviour
         result = Vector3.zero;
     }
 
-
-    /*public Vector3 ChooseRandomDestination(float seeDistance)
-    {
-        Vector3 randDirection = Random.insideUnitSphere * seeDistance;
-
-        randDirection += transform.position;
-
-        NavMeshHit navHit;
-
-        NavMesh.SamplePosition(randDirection, out navHit, seeDistance, -1);
-
-        if (!navHit.hit) ChooseRandomDestination(seeDistance);
-
-        NavMeshPath path = new NavMeshPath();
-        this.navMeshAgent.CalculatePath(navHit.position, path);
-        //bool canReachPoint = path.status == NavMeshPathStatus.PathComplete;
-        bool canReachPoint = false;
-        if (path.status == NavMeshPathStatus.PathComplete)
-            canReachPoint = true;
-
-        if (!canReachPoint)
-        {
-            ChooseRandomDestination(seeDistance);
-        }
-
-        targetDestination = navHit.position;
-        return targetDestination;
-    }*/
-
-        public void MoveTo(Vector3 destination)
+        
+    public void MoveTo(Vector3 destination, float speed)
     {
         navMeshAgent.destination = destination;
+        navMeshAgent.speed = speed;
+
     }
 
     public bool AtWaypoint()

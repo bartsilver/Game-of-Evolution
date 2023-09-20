@@ -6,7 +6,9 @@ public class BasicStats : MonoBehaviour, IStats
 {
     [SerializeField] Material femaleMaterial;
     [SerializeField] Material maleMaterial;
+    private float maxEnergy;
     public float energy = 100f;
+
     public float speed = 3f;
     public float sight = 10f;
     public Sex sex;
