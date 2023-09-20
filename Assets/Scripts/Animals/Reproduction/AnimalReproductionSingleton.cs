@@ -11,6 +11,9 @@ public class AnimalReproductionSingleton : MonoBehaviour
     [SerializeField] float percentageChange = 10f;
     [SerializeField] GameObject newAnimalPrefab;
 
+    Dictionary<string, float> newAverage;
+    Dictionary<string, float> newstats;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,11 +32,31 @@ public class AnimalReproductionSingleton : MonoBehaviour
         BasicStats newAnimalStats;
 
         GameObject newAnimal =  Instantiate(newAnimalPrefab, targetArea, Quaternion.identity);
+
+        newAverage = new Dictionary<string, float>();
+        newstats = new Dictionary<string, float>();
+
+        foreach (KeyValuePair<string, float> thisAnimalStats in thisAnimal.stats)
+        {
+            float thisValue;
+            float mateValue;
+
+            thisAnimal.stats.TryGetValue(thisAnimalStats.Key, out thisValue);
+            mate.stats.TryGetValue(thisAnimalStats.Key, out mateValue);
+            newAverage.Add(thisAnimalStats.Key, FindAverageValue(thisValue, mateValue));
+        }
         
         newAnimalStats = newAnimal.GetComponent<BasicStats>();
 
-        newAnimalStats.speed = GenerateRandomProperty(FindAverageValue(thisAnimal.speed, mate.speed));
-        newAnimalStats.sight = GenerateRandomProperty(FindAverageValue(thisAnimal.sight, mate.sight));
+        foreach (KeyValuePair<string, float> stats in newAnimalStats.stats)
+        {
+            float averageValue;
+            newAverage.TryGetValue(stats.Key, out averageValue);
+            newstats.Add(stats.Key, GenerateRandomProperty(averageValue));
+
+        }
+        newAnimalStats.stats = newstats;
+        newAnimalStats.InitializeStats();
 
     }
 

@@ -11,11 +11,20 @@ public class BasicStats : MonoBehaviour, IStats
 
     public float speed = 3f;
     public float sight = 10f;
+    public float testNumber = 5f;
     public Sex sex;
+
+    public Dictionary<string, float> stats = new Dictionary<string, float>()
+    {
+        {"speed", 5 },
+        {"sight", 20 },
+        {"testNumber", 5f }
+    };
 
 
     private void Awake()
     {
+        InitializeStats();
         sex = RandomSex();
         if (sex == Sex.Male)
         {
@@ -46,6 +55,13 @@ public class BasicStats : MonoBehaviour, IStats
         {
             return Sex.Female;
         }
+    }
+
+    public void InitializeStats()
+    {
+        speed = stats["speed"];
+        sight = stats["sight"];
+        testNumber = stats["testNumber"];
     }
 
     private void Die()
