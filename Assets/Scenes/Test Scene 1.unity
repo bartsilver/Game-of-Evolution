@@ -5456,7 +5456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reproductionDistance: 5
-  percentageChange: 100
+  percentageChange: 10
   newAnimalPrefab: {fileID: 5070025681912439893, guid: 62c76e24ae3e4ed448bb1322ef5661fc,
     type: 3}
 --- !u!1001 &1633312299

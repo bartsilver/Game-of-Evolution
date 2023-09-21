@@ -85,6 +85,7 @@ public class AnimalBrain : MonoBehaviour
         if (Vector3.Distance(transform.position, foodFound.transform.position) < 2f)
         {
             currentState = behaviorMethods.Eat(foodFound, basicStats);
+            targetDestination = Vector3.zero;
         }
     }
 
